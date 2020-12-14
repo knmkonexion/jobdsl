@@ -23,6 +23,10 @@ folder('Kubernetes') {
 
 pipelineJob('Kubernetes/kind-deployment')
 {
+  parameters {
+    stringParam('CLUSTER_NAME', 'k8s-test', 'What do you want to name your K8s/KinD cluster?')
+  }
+
   def repoUrl = "https://github.com/knmkonexion/kind.git"
   description("Deploys Kubernetes Cluster via KinD")
   keepDependencies(false)
