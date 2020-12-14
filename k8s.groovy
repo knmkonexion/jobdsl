@@ -1,10 +1,10 @@
-listView('Containers') {
-  description('Containers Jobs')
+listView('Kubernetes') {
+  description('Kubernetes Related Jobs')
   filterBuildQueue()
   filterExecutors()
   recurse()
   jobs {
-    name('Containers/jenkins-master')
+    name('Kubernetes/kind-deployment')
   }
   columns {
     status()
@@ -17,14 +17,14 @@ listView('Containers') {
   }
 }
 
-folder('Containers') {
-  description('Container build pipelines')
+folder('Kubernetes') {
+  description('Kubernetes Deployment Jobs')
 }
 
-pipelineJob('Containers/jenkins-master')
+pipelineJob('Kubernetes/kind-deployment')
 {
-  def repoUrl = "https://github.com/knmkonexion/jenkins-master.git"
-  description("Container build pipeline for: Jenkins Master")
+  def repoUrl = "https://github.com/knmkonexion/kind.git"
+  description("Deploys Kubernetes Cluster via KinD")
   keepDependencies(false)
 
   definition {
