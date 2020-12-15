@@ -5,6 +5,7 @@ listView('Kubernetes') {
   recurse()
   jobs {
     name('Kubernetes/kind-deployment')
+    name('Kubernetes/k3d-deployment')
   }
   columns {
     status()
@@ -26,11 +27,9 @@ pipelineJob('Kubernetes/kind-deployment')
   parameters {
     stringParam('CLUSTER_NAME', 'k8s-test', 'What do you want to name your K8s/KinD cluster?')
   }
-
   def repoUrl = "https://github.com/knmkonexion/kind.git"
   description("Deploys Kubernetes Cluster via KinD")
   keepDependencies(false)
-
   definition {
     cpsScm {
       lightweight(true)
@@ -40,10 +39,8 @@ pipelineJob('Kubernetes/kind-deployment')
             credentials('kasey-github')
             url(repoUrl)
           }
-
           branches('master')
           scriptPath('Jenkinsfile')
-
           extensions {
             wipeOutWorkspace()
           }
@@ -51,8 +48,38 @@ pipelineJob('Kubernetes/kind-deployment')
       }
     }
   }
+  logRotator {
+    numToKeep(15)
+    artifactNumToKeep(15)\
+  }
+}
 
-
+pipelineJob('Kubernetes/k3d-deployment')
+{
+  parameters {
+    stringParam('CLUSTER_NAME', 'k3s-test', 'What do you want to name your K3s cluster?')
+  }
+  def repoUrl = "https://github.com/knmkonexion/k3d-deployment.git"
+  description("Deploys Kubernetes Cluster via k3s/k3d")
+  keepDependencies(false)
+  definition {
+    cpsScm {
+      lightweight(true)
+      scm {
+        git {
+          remote {
+            credentials('kasey-github')
+            url(repoUrl)
+          }
+          branches('master')
+          scriptPath('Jenkinsfile')
+          extensions {
+            wipeOutWorkspace()
+          }
+        }
+      }
+    }
+  }
   logRotator {
     numToKeep(15)
     artifactNumToKeep(15)\
