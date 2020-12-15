@@ -5,6 +5,7 @@ listView('Containers') {
   recurse()
   jobs {
     name('Containers/jenkins-master')
+    name('Containers/nginx-web')
   }
   columns {
     status()
@@ -26,7 +27,6 @@ pipelineJob('Containers/jenkins-master')
   def repoUrl = "https://github.com/knmkonexion/jenkins-master.git"
   description("Container build pipeline for: Jenkins Master")
   keepDependencies(false)
-
   definition {
     cpsScm {
       lightweight(true)
@@ -47,8 +47,37 @@ pipelineJob('Containers/jenkins-master')
       }
     }
   }
+  logRotator {
+    numToKeep(15)
+    artifactNumToKeep(15)\
+  }
+}
 
+pipelineJob('Containers/nginx-web')
+{
+  def repoUrl = "https://github.com/knmkonexion/nginx-web.git"
+  description("Container build pipeline for: NGINX Website")
+  keepDependencies(false)
+  definition {
+    cpsScm {
+      lightweight(true)
+      scm {
+        git {
+          remote {
+            credentials('kasey-github')
+            url(repoUrl)
+          }
 
+          branches('master')
+          scriptPath('Jenkinsfile')
+
+          extensions {
+            wipeOutWorkspace()
+          }
+        }
+      }
+    }
+  }
   logRotator {
     numToKeep(15)
     artifactNumToKeep(15)\
