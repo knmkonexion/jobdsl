@@ -1,5 +1,4 @@
 listView('Containers') {
-  description('Containers Jobs')
   filterBuildQueue()
   filterExecutors()
   recurse()

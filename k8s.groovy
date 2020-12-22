@@ -1,5 +1,4 @@
 listView('Kubernetes') {
-  description('Kubernetes Related Jobs')
   filterBuildQueue()
   filterExecutors()
   recurse()
